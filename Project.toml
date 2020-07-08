@@ -1,7 +1,7 @@
 name = "Parallelism"
 uuid = "c8c83da1-e5f9-4e2c-a857-b8617bac3554"
 authors = ["Invenia Technical Computing Corporation"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"

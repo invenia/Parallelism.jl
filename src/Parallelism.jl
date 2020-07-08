@@ -1,7 +1,7 @@
 module Parallelism
 
 using Base.Threads
-using Distributed: ProcessExitedException, pmap
+using Distributed
 using LinearAlgebra
 using Memento
 

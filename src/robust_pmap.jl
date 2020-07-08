@@ -24,7 +24,7 @@ function robust_pmap(f::Function, args...; num_retries::Int=3)
         return should_retry
     end
 
-    return pmap(f, args...;
+    return pmap(f, CachingPool(workers()), args...;
         retry_check=retry_check,
         retry_delays=ExponentialBackOff(n=num_retries)
     )
