@@ -15,8 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - "1.0"  # LTS
-          - "1"    # Latest Release
+          - "1"  # Latest Release
         os:
           - ubuntu-latest
           - macOS-latest
@@ -63,7 +62,7 @@ jobs:
     name: Notify Slack Failure
     needs: test
     runs-on: ubuntu-latest
-    if: github.event == 'schedule'
+    if: always() && github.event_name == 'schedule'
     steps:
       - uses: technote-space/workflow-conclusion-action@v2
       - uses: voxmedia/github-action-slack-notify-build@v1
