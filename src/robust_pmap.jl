@@ -20,7 +20,11 @@ function robust_pmap(f::Function, args...; num_retries::Int=3)
             # In general IO errors can be transient and related to network blips
             err isa Base.IOError
         )
-        should_retry && info(LOGGER, "Retrying computation that failed due to $err")
+        if should_retry
+            info(LOGGER, "Retrying computation that failed due to a $(typeof(err)): $err")
+        else
+            warn(LOGGER, "Non-retryable $(typeof(err)) occurred: $err")
+        end
         return should_retry
     end
 
