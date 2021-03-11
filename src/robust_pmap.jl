@@ -23,7 +23,7 @@ function robust_pmap(f::Function, args...; num_retries::Int=3)
         if should_retry
             info(LOGGER, "Retrying computation that failed due to a $(typeof(err)): $err")
         else
-            info(LOGGER, "Non-retryable $(typeof(err)) occurred: $err")
+            warn(LOGGER, "Non-retryable $(typeof(err)) occurred: $err")
         end
         return should_retry
     end
