@@ -10,7 +10,7 @@
                 i += 1
                 throw(err)
             end
-            isodd(x)
+            return isodd(x)
         end
         return throw_isodd
     end
@@ -28,7 +28,9 @@
     @test robust_pmap(throw_isodd, input) == expected
     # Check retries are logged
     throw_isodd = make_throw_isodd(ProcessExitedException())
-    @test_log LOGGER "info" ("Retrying", "ProcessExitedException") robust_pmap(throw_isodd, input)
+    @test_log LOGGER "info" ("Retrying", "ProcessExitedException") robust_pmap(
+        throw_isodd, input
+    )
     # Check with lower number of retrys
     throw_isodd = make_throw_isodd(ProcessExitedException())
     if VERSION < v"1.8-"
@@ -48,7 +50,9 @@
     if VERSION < v"1.8-"
         @test_throws ArgumentError robust_pmap(throw_isodd, input, num_retries=1)
     else
-        @test_throws "stream is closed or unusable" robust_pmap(throw_isodd, input, num_retries=1)
+        @test_throws "stream is closed or unusable" robust_pmap(
+            throw_isodd, input, num_retries=1
+        )
     end
 
     # Other ArgumentErrors should not be retried
@@ -56,11 +60,16 @@
     if VERSION < v"1.8-"
         @test_throws ArgumentError robust_pmap(throw_isodd, input)
     else
-        @test_throws "stream is open but other stuff is wrong" robust_pmap(throw_isodd, input)
+        @test_throws "stream is open but other stuff is wrong" robust_pmap(
+            throw_isodd, input
+        )
     end
     # No retries should mean no log of retries
     throw_isodd = make_throw_isodd(ArgumentError("stream is open but other stuff is wrong"))
-    @test_nolog LOGGER "info" "Retrying" try robust_pmap(throw_isodd, input) catch end
+    @test_nolog LOGGER "info" "Retrying" try
+        robust_pmap(throw_isodd, input)
+    catch
+    end
 
     # Check IOError is retried
     throw_isodd = make_throw_isodd(Base.IOError("msg", 1))
