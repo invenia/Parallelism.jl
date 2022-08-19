@@ -16,11 +16,11 @@
     end
 
     # Check other errors don't retry
-    throw_isodd = make_throw_isodd(ErrorException("Error"))
+    throw_isodd = make_throw_isodd(ErrorException("Error123"))
     if VERSION < v"1.8-"
         @test_throws ErrorException robust_pmap(throw_isodd, input)
     else
-        @test_throws "Error" robust_pmap(throw_isodd, input)
+        @test_throws "Error123" robust_pmap(throw_isodd, input)
     end
 
     # Check ProcessExitedException is retried
